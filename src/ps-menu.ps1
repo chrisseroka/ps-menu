@@ -1,6 +1,5 @@
 function DrawMenu {
     param ($menuItems, $menuPosition)
-    [console]::CursorVisible=$false #prevents cursor flickering
     $l = $menuItems.length
     for ($i = 0; $i -le $l;$i++) {
 		if ($menuItems[$i] -ne $null){
@@ -11,7 +10,6 @@ function DrawMenu {
 			}
 		}
     }
-    [console]::CursorVisible=$true
 }
 
 function Menu {
@@ -19,6 +17,7 @@ function Menu {
     $vkeycode = 0
     $pos = 0
     $cur_pos = [System.Console]::CursorTop
+    [console]::CursorVisible=$false #prevents cursor flickering
     if ($menuItems.Length -gt 0)
 	{
 		DrawMenu $menuItems $pos
@@ -41,5 +40,6 @@ function Menu {
 	{
 		$pos = -1
 	}
+    [console]::CursorVisible=$true
 	return $pos
 }
