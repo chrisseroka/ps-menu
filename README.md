@@ -6,7 +6,7 @@ Simple module to generate interactive console menus (like yeoman)
 ```powershell
 menu @("option 1", "option 2", "option 3")
 ```
- ![Example](https://github.com/chrisseroka/ps-menu/raw/master/docs/example.gif")
+ ![Example](https://github.com/chrisseroka/ps-menu/raw/master/docs/example.gif)
 
 ## Installing PS-Menu
 
