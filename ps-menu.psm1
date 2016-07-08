@@ -13,7 +13,7 @@ function DrawMenu {
 }
 
 function Menu {
-    param ([array]$menuItems)
+    param ([array]$menuItems, [switch]$ReturnIndex=$false)
     $vkeycode = 0
     $pos = 0
     $cur_pos = [System.Console]::CursorTop
@@ -27,7 +27,7 @@ function Menu {
 			If ($vkeycode -eq 38 -or $press.Character -eq 'k') {$pos--}
 			If ($vkeycode -eq 40 -or $press.Character -eq 'j') {$pos++}
 			if ($pos -lt 0) {$pos = 0}
-			If ($vkeycode -eq 27) {$pos = -1 }
+			If ($vkeycode -eq 27) {$pos = $null }
 			if ($pos -ge $menuItems.length) {$pos = $menuItems.length -1}
 			if ($vkeycode -ne 27)
 			{
@@ -38,8 +38,20 @@ function Menu {
 	}
 	else 
 	{
-		$pos = -1
+		$pos = $null
 	}
     [console]::CursorVisible=$true
-	return $pos
+
+    if ($pos -eq $null)
+	{
+		return $null
+	}
+    elseif ($ReturnIndex -eq $false)
+	{
+		return $menuItems[$pos]
+	}
+	else 
+	{
+		return $pos
+	}
 }
