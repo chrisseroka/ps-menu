@@ -1,26 +1,16 @@
-write-debug "Loading: ps-menu.psm1"
-
 function DrawMenu
 {
     [cmdletbinding()]
-    param ($menuItems, $menuPosition, $Multiselect, $selection)
+    param (
+        $menuItems, $menuPosition, $Multiselect, $selection
+    )
+    $l = @($menuItems).count
 
-	# ensure preferences passed down to continue into function
-    $l = $menuItems.length
     for ($i = 0; $i -le $l; $i++)
     {
-
-        #if ($menuItems[$i] -ne $null)
-        if(@($menuitems).count -gt 0)
+        if ($menuItems[$i] -ne $null)
         {
-
-            #write-verbose ($menuItems | format-table | out-string) -verbose
-            #write-verbose "`$i: $i" -Verbose
-
-            if ($i -le (@($menuItems).count))
-            {
-                $item = $menuItems[$i]
-            }
+            $item = $menuItems[$i]
             if ($Multiselect)
             {
                 if ($selection -contains $i)
@@ -46,9 +36,7 @@ function DrawMenu
 
 function Toggle-Selection
 {
-    [cmdletbinding()]
     param ($pos, [array]$selection)
-
     if ($selection -contains $pos)
     {
         $result = $selection | where {$_ -ne $pos}
@@ -58,14 +46,12 @@ function Toggle-Selection
         $selection += $pos
         $result = $selection
     }
-    $result
+    return $result
 }
 
 function Menu
 {
-    [cmdletbinding()]
     param ([array]$menuItems, [switch]$ReturnIndex = $false, [switch]$Multiselect)
-
     $vkeycode = 0
     $pos = 0
     $selection = @()
@@ -83,7 +69,7 @@ function Menu
             If ($press.Character -eq ' ') { $selection = Toggle-Selection $pos $selection }
             if ($pos -lt 0) {$pos = 0}
             If ($vkeycode -eq 27) {$pos = $null }
-            if ($pos -ge $menuItems.length) {$pos = $menuItems.length - 1}
+            if ($pos -ge @($menuItems).Count) {$pos = @($menuItems).count - 1}
             if ($vkeycode -ne 27)
             {
                 [System.Console]::SetCursorPosition(0, $cur_pos)
