@@ -1,108 +1,59 @@
-function DrawMenu
+$script:ModuleRoot = $PSScriptRoot
+$script:PSModuleVersion = "3.0.1"
+
+function Import-ModuleFile
 {
-    [cmdletbinding()]
-    param (
-        $menuItems, $menuPosition, $Multiselect, $selection
+    <#
+		.SYNOPSIS
+			Loads files into the module on module import.
+
+		.DESCRIPTION
+			This helper function is used during module initialization.
+			It should always be dotsourced itself, in order to proper function.
+
+			This provides a central location to react to files being imported, if later desired
+
+		.PARAMETER Path
+			The path to the file to load
+
+		.EXAMPLE
+			PS C:\> . Import-ModuleFile -File $function.FullName
+
+			Imports the file stored in $function according to import policy
+	#>
+    [CmdletBinding()]
+    Param (
+        [string]
+        $Path
     )
-    $l = @($menuItems).count
 
-    for ($i = 0; $i -le $l; $i++)
-    {
-        if ($menuItems[$i] -ne $null)
-        {
-            $item = $menuItems[$i]
-            if ($Multiselect)
-            {
-                if ($selection -contains $i)
-                {
-                    $item = '[x] ' + $item
-                }
-                else
-                {
-                    $item = '[ ] ' + $item
-                }
-            }
-            if ($i -eq $menuPosition)
-            {
-                Write-Host "> $($item)" -ForegroundColor Green
-            }
-            else
-            {
-                Write-Host "  $($item)"
-            }
-        }
-    }
+    if ($doDotSource) { . $Path }
+    else { $ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText($Path))), $null, $null) }
 }
 
-function Toggle-Selection
+# Detect whether at some level dotsourcing was enforced
+$script:doDotSource = Get-PSFConfigValue -FullName PropertyDuplicator.Import.DoDotSource -Fallback $false
+if ($PropertyDuplicator_dotsourcemodule) { $script:doDotSource = $true }
+
+# Execute Preimport actions
+. Import-ModuleFile -Path "$ModuleRoot\internal\scripts\preimport.ps1"
+
+# Import all internal functions
+foreach ($function in (Get-ChildItem "$ModuleRoot\internal\functions" -Filter "*.ps1" -Recurse -ErrorAction Ignore))
 {
-    param ($pos, [array]$selection)
-    if ($selection -contains $pos)
-    {
-        $result = $selection | where {$_ -ne $pos}
-    }
-    else
-    {
-        $selection += $pos
-        $result = $selection
-    }
-    return $result
+    . Import-ModuleFile -Path $function.FullName
 }
 
-function Menu
+# Import all public functions
+foreach ($function in (Get-ChildItem "$ModuleRoot\functions" -Filter "*.ps1" -Recurse -ErrorAction Ignore))
 {
-    param ([array]$menuItems, [switch]$ReturnIndex = $false, [switch]$Multiselect)
-    $vkeycode = 0
-    $pos = 0
-    $selection = @()
-    $cur_pos = [System.Console]::CursorTop
-    [console]::CursorVisible = $false #prevents cursor flickering
-    if ($menuItems.Length -gt 0)
-    {
-        DrawMenu $menuItems $pos $Multiselect $selection
-        While ($vkeycode -ne 13 -and $vkeycode -ne 27)
-        {
-            $press = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown")
-            $vkeycode = $press.virtualkeycode
-            If ($vkeycode -eq 38 -or $press.Character -eq 'k') {$pos--}
-            If ($vkeycode -eq 40 -or $press.Character -eq 'j') {$pos++}
-            If ($press.Character -eq ' ') { $selection = Toggle-Selection $pos $selection }
-            if ($pos -lt 0) {$pos = 0}
-            If ($vkeycode -eq 27) {$pos = $null }
-            if ($pos -ge @($menuItems).Count) {$pos = @($menuItems).count - 1}
-            if ($vkeycode -ne 27)
-            {
-                [System.Console]::SetCursorPosition(0, $cur_pos)
-                DrawMenu $menuItems $pos $Multiselect $selection
-            }
-        }
-    }
-    else
-    {
-        $pos = $null
-    }
-    [console]::CursorVisible = $true
-
-    if ($ReturnIndex -eq $false -and $pos -ne $null)
-    {
-        if ($Multiselect)
-        {
-            return $menuItems[$selection]
-        }
-        else
-        {
-            return $menuItems[$pos]
-        }
-    }
-    else
-    {
-        if ($Multiselect)
-        {
-            return $selection
-        }
-        else
-        {
-            return $pos
-        }
-    }
+    . Import-ModuleFile -Path $function.FullName
 }
+
+# Execute Postimport actions
+. Import-ModuleFile -Path "$ModuleRoot\internal\scripts\postimport.ps1"
+
+
+
+Set-Alias 'Menu' 'Show-PSMenu'  -force
+Set-Alias 'Show-Menu' 'Show-PSMenu' -force
