@@ -39,7 +39,7 @@ function Menu {
     $vkeycode = 0
     $pos = 0
     $selection = @()
-    $cur_pos = [System.Console]::CursorTop
+    $cur_pos = [System.Console]::get_CursorTop()
     [console]::CursorVisible=$false #prevents cursor flickering
     if ($menuItems.Length -gt 0)
 	{
