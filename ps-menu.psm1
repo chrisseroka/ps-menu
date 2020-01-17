@@ -40,8 +40,9 @@ function Menu {
     $pos = 0
     $selection = @()
     $cur_pos = [System.Console]::CursorTop
-    [console]::CursorVisible=$false #prevents cursor flickering
-    if ($menuItems.Length -gt 0)
+    [Console]::TreatControlCAsInput = $True # Alows us to put the cursor back after ctrl+c
+    try {
+	if ($menuItems.Length -gt 0)
 	{
 		DrawMenu $menuItems $pos $Multiselect $selection
 		While ($vkeycode -ne 13 -and $vkeycode -ne 27) {
@@ -64,7 +65,9 @@ function Menu {
 	{
 		$pos = $null
 	}
-    [console]::CursorVisible=$true
+    } finally {
+        [console]::CursorVisible=$true
+    }
 
     if ($ReturnIndex -eq $false -and $pos -ne $null)
 	{
