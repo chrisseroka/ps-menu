@@ -39,10 +39,9 @@ function Menu {
     $vkeycode = 0
     $pos = 0
     $selection = @()
-    $cur_pos = [System.Console]::CursorTop
     [console]::CursorVisible=$false #prevents cursor flickering
     if ($menuItems.Length -gt 0)
-	{
+	 {
 		DrawMenu $menuItems $pos $Multiselect $selection
 		While ($vkeycode -ne 13 -and $vkeycode -ne 27) {
 			$press = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown")
@@ -55,7 +54,8 @@ function Menu {
 			if ($pos -ge $menuItems.length) {$pos = $menuItems.length -1}
 			if ($vkeycode -ne 27)
 			{
-				[System.Console]::SetCursorPosition(0,$cur_pos)
+			   $startPos = [System.Console]::CursorTop - $menuItems.Length
+				[System.Console]::SetCursorPosition(0, $startPos)
 				DrawMenu $menuItems $pos $Multiselect $selection
 			}
 		}
@@ -85,3 +85,4 @@ function Menu {
 		}
 	}
 }
+
