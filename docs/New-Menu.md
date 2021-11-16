@@ -17,7 +17,7 @@ New-Menu [[-MenuItems] <Array>] [-ReturnIndex] [-MultiSelect] [[-Message] <Strin
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This module allows you to generate simple single or multiselect text based menus. Arrow keys can be used for navigation or you can use j/k (Vim style).
 
 ## EXAMPLES
 
