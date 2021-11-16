@@ -7,11 +7,11 @@ Simple module to generate interactive console menus (like yeoman)
 $Options  = @("Option 1", "Option 2", "Option 3")
 New-Menu -MenuItems $Options
 ```
- ![Example](./docs/Example1.gif)
+ ![Example](docs/Example1.gif)
 
 Example of a multi-select menu:
 
- ![Example](./docs/Example2.gif)
+ ![Example](docs/Example2.gif)
 
 # Installation
 
