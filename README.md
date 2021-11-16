@@ -13,6 +13,10 @@ Example of a multi-select menu:
 
  ![Example2](docs/example2.gif)
 
+ Example of a custom message:
+
+![Example3](docs/Example3.gif)
+
 # Installation
 
 You can install it from the PowerShellGallery using PowerShellGet
