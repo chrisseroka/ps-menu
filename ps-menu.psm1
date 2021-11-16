@@ -34,7 +34,7 @@ function Toggle-Selection {
 	$result
 }
 
-function Menu {
+function New-Menu {
     param ([array]$menuItems, [switch]$ReturnIndex=$false, [switch]$Multiselect)
     $vkeycode = 0
     $pos = 0
