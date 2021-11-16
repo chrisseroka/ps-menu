@@ -35,13 +35,16 @@ function Toggle-Selection {
 }
 
 function New-Menu {
-    param ([array]$menuItems, [switch]$ReturnIndex=$false, [switch]$Multiselect)
+    param ([array]$MenuItems, [switch]$ReturnIndex=$false, [switch]$MultiSelect, [string]$Message)
     $vkeycode = 0
     $pos = 0
     $selection = @()
     if ($menuItems.Length -gt 0)
 	{
 		try {
+			If($Message){
+				Write-Output "$($Message): "
+			}
 			[console]::CursorVisible=$false #prevents cursor flickering
 			DrawMenu $menuItems $pos $Multiselect $selection
 			While ($vkeycode -ne 13 -and $vkeycode -ne 27) {
