@@ -23,8 +23,7 @@ This module allows you to generate simple single or multiselect text based menus
 
 ### Example 1
 ```powershell
-PS C:\> $Options = @("Option 1","Option 2","Option 3")
-PS C:\> New-Menu -MenuItems $Options
+PS C:\> New-Menu -MenuItems "Option 1","Option 2","Option 3"
   Option 1
 > Option 2
   Option 3
@@ -34,8 +33,7 @@ The above example would return "Option 2" as a string.
 
 ### Example 2
 ```powershell
-PS C:\> $Options = @("Option 1","Option 2","Option 3")
-PS C:\> New-Menu -MenuItems $Options -MultiSelect
+PS C:\> New-Menu -MenuItems "Option 1","Option 2","Option 3" -MultiSelect
   [x] Option 1
   [ ] Option 2
 > [x] Option 3
@@ -45,14 +43,24 @@ The above example would return "Option 1" and "Option 3" as an array of strings.
 
 ### Example 3
 ```powershell
-PS C:\> $Options = @("Option 1","Option 2","Option 3")
-PS C:\> New-Menu -MenuItems $Options
+PS C:\> $Msg = "Please choose from the below"
+PS C:\> New-Menu -MenuItems "Option 1","Option 2","Option 3" -Message $Msg
   Option 1
 > Option 2
   Option 3
 ```
 
-The above example would return "1" as an integer.
+The above example would show a custom message and return "Option 2" as a string. 
+
+### Example 4
+```powershell
+PS C:\> New-Menu -MenuItems "Option 1","Option 2","Option 3" -ReturnIndex
+  Option 1
+> Option 2
+  Option 3
+```
+
+The above example would return "2" as an integer.
 
 ## PARAMETERS
 
