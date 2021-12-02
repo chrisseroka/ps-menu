@@ -2,7 +2,7 @@ function DrawMenu {
     param ($menuItems, $menuPosition, $Multiselect, $selection)
     $l = $menuItems.length
     for ($i = 0; $i -le $l;$i++) {
-		if ($menuItems[$i] -ne $null){
+		if ($null -ne $menuItems[$i]){
 			$item = $menuItems[$i]
 			if ($Multiselect)
 			{
@@ -25,7 +25,7 @@ function DrawMenu {
 function Toggle-Selection {
 	param ($pos, [array]$selection)
 	if ($selection -contains $pos){ 
-		$result = $selection | where {$_ -ne $pos}
+		$result = $selection | Where-Object {$_ -ne $pos}
 	}
 	else {
 		$selection += $pos
@@ -76,7 +76,7 @@ function New-Menu {
 		$pos = $null
 	}
 
-    if ($ReturnIndex -eq $false -and $pos -ne $null)
+    if ($ReturnIndex -eq $false -and $null -ne $pos)
 	{
 		if ($Multiselect){
 			return $menuItems[$selection]
