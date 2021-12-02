@@ -39,4 +39,15 @@ Install-Module PS-Menu
 * Source hosted at [GitHub][repo]
 * Report issues/questions/feature requests on [GitHub Issues][issues]
 
+## Updating help
+
+Once you have completed your change to the module you will need to regenerate the help files. To do this you will need to have the PlatyPS module installed.
+1. Navigate to the root of the project
+2. Run the below code.
+
+```powershell
+New-ExternalHelp .\ps-menu\docs\ -OutputPath .\ps-menu\en-US\ -Force
+Update-MarkdownHelp -Path "C:\Projects\Config\ps-menu\docs\" -AlphabeticParamsOrder -Force
+```
+
 Pull requests are very welcome! 
