@@ -4,8 +4,7 @@ Simple module to generate interactive console menus (like yeoman)
 # Examples:
 
 ```powershell
-$Options  = @("Option 1", "Option 2", "Option 3")
-New-Menu -MenuItems $Options
+New-Menu -MenuItems "Option 1", "Option 2", "Option 3"
 ```
  ![Example1](docs/example1.gif)
 
