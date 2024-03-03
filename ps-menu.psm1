@@ -42,6 +42,7 @@ function Menu {
     if ($menuItems.Length -gt 0)
 	{
 		try {
+			$startPos = [System.Console]::CursorTop		
 			[console]::CursorVisible=$false #prevents cursor flickering
 			DrawMenu $menuItems $pos $Multiselect $selection
 			While ($vkeycode -ne 13 -and $vkeycode -ne 27) {
